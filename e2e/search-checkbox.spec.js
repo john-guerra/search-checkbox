@@ -129,3 +129,52 @@ test("11. the counter is announced to assistive technology", async ({
   const after = await output.elementHandle();
   expect(await before.evaluate((a, b) => a === b, after)).toBe(true);
 });
+
+test("12. typing in the search box fires no input event on the widget", async ({
+  page,
+}) => {
+  // Deviation #9. The <input type=search> emits a native, bubbling `input`
+  // event that reaches the widget root, so consumers saw one event per
+  // keystroke even though the selection never changed. @509 has this too: its
+  // author commented out an explicit dispatch here, not realising the native
+  // event was already bubbling underneath it.
+  await expect(page.locator("#event-count")).toHaveText("0");
+  await searchBox(page).pressSequentially("Accu", { delay: 30 });
+  await expect(visibleRows(page)).toHaveCount(2); // filtering still works
+  await expect(page.locator("#event-count")).toHaveText("0");
+});
+
+test("13. an initial value outside data is ignored", async ({ page }) => {
+  // Deviation #10. @509 seeds its Map straight from options.value with no
+  // membership check, so a stray option inflates the count forever and leaks
+  // out of .value — "(3 of 2 selected)" for a two-option widget.
+  const result = await page.evaluate(() => {
+    const w = SearchCheckbox(["A", "B"], { value: ["A", "B", "C"] });
+    document.body.append(w);
+    return {
+      text: w.querySelector(".search-checkbox-count").textContent,
+      value: w.value,
+    };
+  });
+  expect(result.text).toBe("(2 of 2 selected)");
+  expect(result.value).toEqual(["A", "B"]);
+});
+
+test("14. a stray value assigned later is also ignored", async ({ page }) => {
+  await page.evaluate(() => {
+    document.querySelector(".search-checkbox").value = ["Vision", "NotAThing"];
+  });
+  await expect(counter(page)).toHaveText(`(1 of ${TOTAL} selected)`);
+  const value = await page.evaluate(
+    () => document.querySelector(".search-checkbox").value
+  );
+  expect(value).toEqual(["Vision"]);
+});
+
+test("15. the search input has an accessible name", async ({ page }) => {
+  // The other half of deviation #6, previously untested.
+  await expect(searchBox(page)).toHaveAttribute(
+    "aria-label",
+    "Search Variables"
+  );
+});

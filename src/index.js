@@ -72,9 +72,16 @@ export default function searchCheckbox(data, options) {
   const btnAll = html`<button type="button">All</button>`;
   const btnNone = html`<button type="button">None</button>`;
 
+  // Deviation #10: only options that actually exist in `data` may be selected.
+  // @509 seeded the Map straight from options.value, so a stray entry had no
+  // checkbox, was never cleared by changeSome(data, false), inflated the count
+  // forever — "(3 of 2 selected)" — and leaked out through `.value`.
+  const known = new Set(data);
+  const selectable = (sel) => Array.from(sel).filter((d) => known.has(d));
+
   // The Map is the source of truth. Reading state back out of the checkboxes
   // would desynchronize as soon as a filter hides selected rows.
-  const selected = new Map(Array.from(options.value).map((d) => [d, true]));
+  const selected = new Map(selectable(options.value).map((d) => [d, true]));
 
   function countSelected() {
     return Array.from(selected.values()).filter(Boolean).length;
@@ -86,7 +93,7 @@ export default function searchCheckbox(data, options) {
 
   function selectedFromArray(sel) {
     changeSome(data, false);
-    changeSome(sel, true);
+    changeSome(selectable(sel), true);
   }
 
   function selectedToArray() {
@@ -174,7 +181,16 @@ export default function searchCheckbox(data, options) {
 
   checkboxes.value = selectedToArray();
 
-  search.addEventListener("input", () => {
+  search.addEventListener("input", (evt) => {
+    // Deviation #9: searching changes what is *visible*, never the value, so
+    // the widget must stay silent. The <input type=search> emits a native
+    // bubbling `input` event that would otherwise reach the widget root and
+    // fire a consumer's handler once per keystroke. Inputs.search updates its
+    // own value from an inline handler on the input element (target phase),
+    // which has already run by the time this form-level listener sees the
+    // event — so stopping it here is safe. e2e spec 12 guards this.
+    evt.stopPropagation();
+
     // TRAP: `check.value` is the index into the ORIGINAL `data` array, even
     // under Inputs' `sort`/`unique` (see chooser.js). Do NOT replace this with
     // positional pairing against the rendered rows — that is subtly wrong.
