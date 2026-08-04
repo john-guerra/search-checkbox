@@ -54,7 +54,7 @@
   "scripts": {
     "lint": "eslint src test e2e && prettier --check .",
     "format": "prettier --write .",
-    "test": "node --test test/",
+    "test": "node --test test/*.test.js",
     "test:e2e": "playwright test",
     "build": "rollup -c",
     "dev": "rollup -c -w",

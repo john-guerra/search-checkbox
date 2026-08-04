@@ -188,8 +188,13 @@ behavior, not a shortcut past the red step.
 Pure functions only:
 
 - `escapeRegExp` escapes every regex metacharacter it claims to.
-- `termFilter` matches at string start and after a non-letter, but **not**
-  mid-word — the precise semantic that distinguishes it from the default filter.
+- `termFilter` matches a term **anywhere**, including mid-word. *(Corrected
+  during implementation: an earlier draft of this spec described the opposite.
+  The regex is `(?:^.*|[^\p{L}-])term`; the `^.*` branch matches any prefix, so
+  `termFilter("Accuracy")` matches `HeadingAccuracy`. Observable's own filter
+  uses `^` rather than `^.*` and matches neither — that single character is the
+  entire difference, and the reason this module exists.)*
+- `termFilter` still rejects terms that are genuinely absent.
 - `fullSearchFilter` applies multi-term AND semantics across whitespace-split queries.
 - `fullSearchFilter` searches object values via `valuesof`.
 - `fullSearchFilter` returns `false` for `null`/`undefined`.
