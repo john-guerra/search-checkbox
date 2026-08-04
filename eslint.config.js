@@ -6,5 +6,7 @@ export default [
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
   pluginJs.configs.recommended,
   eslintConfigPrettier,
-  { ignores: ["dist/", "node_modules/", "playwright-report/", "test-results/"] },
+  {
+    ignores: ["dist/", "node_modules/", "playwright-report/", "test-results/"],
+  },
 ];
