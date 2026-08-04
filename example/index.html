@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>search-checkbox — demo</title>
+    <!--
+      Served from node_modules, not a CDN. Two reasons: this page is also the
+      e2e fixture, and a network fetch is a CI flake source; and a CDN <link>
+      with no Subresource Integrity is a supply-chain hole.
+    -->
+    <link
+      rel="stylesheet"
+      href="../node_modules/@observablehq/inputs/dist/index.css"
+    />
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 2rem;
+        max-width: 760px;
+      }
+      section {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+      h2 {
+        margin: 0 0 0.25rem;
+        font-size: 1rem;
+      }
+      .hint {
+        color: #666;
+        font-size: 0.85rem;
+        margin: 0 0 0.75rem;
+      }
+      .readout {
+        font:
+          13px ui-monospace,
+          monospace;
+        color: #444;
+        margin-top: 0.75rem;
+        word-break: break-word;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>search-checkbox 🔎☑</h1>
+    <p class="hint">
+      Type to filter. <b>All</b> and <b>None</b> apply to the
+      <i>currently filtered</i> options only — that is the whole point of this
+      widget. Try typing <code>Accuracy</code>, then clicking <b>All</b>.
+    </p>
+
+    <section>
+      <h2>FIFA player attributes</h2>
+      <div id="demo"></div>
+      <div class="readout">selected: <span id="status"></span></div>
+      <div class="readout">input events: <span id="event-count">0</span></div>
+    </section>
+
+    <script src="../dist/SearchCheckbox.js"></script>
+    <script>
+      const DATA = [
+        "ID",
+        "Name",
+        "Age",
+        "Photo",
+        "Nationality",
+        "Flag",
+        "Overall",
+        "Potential",
+        "Club",
+        "Club Logo",
+        "Value",
+        "Wage",
+        "Special",
+        "Preferred Foot",
+        "International Reputation",
+        "Weak Foot",
+        "Skill Moves",
+        "Work Rate",
+        "Body Type",
+        "Real Face",
+        "Position",
+        "Jersey Number",
+        "Joined",
+        "Loaned From",
+        "Contract Valid Until",
+        "Height",
+        "Weight",
+        "LS",
+        "ST",
+        "RS",
+        "LW",
+        "LF",
+        "CF",
+        "RF",
+        "RW",
+        "LAM",
+        "CAM",
+        "RAM",
+        "LM",
+        "LCM",
+        "CM",
+        "RCM",
+        "RM",
+        "LWB",
+        "LDM",
+        "CDM",
+        "RDM",
+        "RWB",
+        "LB",
+        "LCB",
+        "CB",
+        "RCB",
+        "RB",
+        "Crossing",
+        "Finishing",
+        "HeadingAccuracy",
+        "ShortPassing",
+        "Volleys",
+        "Dribbling",
+        "Curve",
+        "FKAccuracy",
+        "LongPassing",
+        "BallControl",
+        "Acceleration",
+        "SprintSpeed",
+        "Agility",
+        "Reactions",
+        "Balance",
+        "ShotPower",
+        "Jumping",
+        "Stamina",
+        "Strength",
+        "LongShots",
+        "Aggression",
+        "Interceptions",
+        "Positioning",
+        "Vision",
+        "Penalties",
+        "Composure",
+        "Marking",
+        "StandingTackle",
+        "SlidingTackle",
+        "GKDiving",
+        "GKHandling",
+        "GKKicking",
+        "GKPositioning",
+        "GKReflexes",
+        "Release Clause",
+      ];
+
+      const widget = SearchCheckbox(DATA, {
+        label: "Variables",
+        value: ["Name", "Age", "Club"],
+        height: 200,
+      });
+
+      let events = 0;
+      const status = document.getElementById("status");
+      const counter = document.getElementById("event-count");
+
+      widget.addEventListener("input", () => {
+        events += 1;
+        counter.textContent = String(events);
+        status.textContent = widget.value.join(", ");
+      });
+
+      document.getElementById("demo").append(widget);
+      status.textContent = widget.value.join(", ");
+    </script>
+  </body>
+</html>
