@@ -1,0 +1,11 @@
+example/
+e2e/
+docs/
+test/
+.claude/
+.github/
+.mcp.json
+playwright.config.js
+eslint.config.js
+CLAUDE.md
+AGENTS.md

@@ -1,0 +1,83 @@
+{
+  "name": "@john-guerra/search-checkbox",
+  "version": "0.1.0",
+  "description": "A reactive widget combining a search box with checkboxes, for selecting from long lists. Select all/none respects the active filter.",
+  "keywords": [
+    "observable",
+    "observablehq",
+    "inputs",
+    "checkbox",
+    "search",
+    "reactive-widgets",
+    "widget"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "John Alexis Guerra Gómez",
+    "url": "https://johnguerra.co"
+  },
+  "homepage": "https://github.com/john-guerra/search-checkbox",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/john-guerra/search-checkbox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/john-guerra/search-checkbox/issues"
+  },
+  "type": "module",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "types": "src/index.d.ts",
+  "browser": "dist/SearchCheckbox.min.js",
+  "unpkg": "dist/SearchCheckbox.min.js",
+  "jsdelivr": "dist/SearchCheckbox.min.js",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "umd": "./dist/SearchCheckbox.min.js",
+      "import": "./src/index.js",
+      "default": "./src/index.js"
+    },
+    "./filter": {
+      "types": "./src/filter.d.ts",
+      "import": "./src/filter.js",
+      "default": "./src/filter.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "files": [
+    "src/**/*.js",
+    "src/**/*.d.ts",
+    "dist/**/*.js"
+  ],
+  "scripts": {
+    "lint": "eslint src test e2e && prettier --check .",
+    "format": "prettier --write .",
+    "test": "node --test test/",
+    "test:e2e": "playwright test",
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@observablehq/inputs": "^0.12.0",
+    "htl": "^0.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@playwright/test": "^1.49.0",
+    "@rollup/plugin-commonjs": "^28.0.1",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-terser": "^1.0.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.14.0",
+    "http-server": "^14.1.1",
+    "prettier": "^3.4.2",
+    "rollup": "^4.28.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
