@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>search-checkbox — Inputs.bind demo</title>
+    <link
+      rel="stylesheet"
+      href="../node_modules/@observablehq/inputs/dist/index.css"
+    />
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 2rem;
+        max-width: 820px;
+      }
+      section {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+      h2 {
+        margin: 0 0 0.25rem;
+        font-size: 1rem;
+      }
+      .hint {
+        color: #666;
+        font-size: 0.85rem;
+        margin: 0 0 0.75rem;
+      }
+      .readout {
+        font:
+          13px ui-monospace,
+          monospace;
+        color: #444;
+        margin-top: 0.75rem;
+        word-break: break-word;
+      }
+      .pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+      @media (max-width: 640px) {
+        .pair {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>search-checkbox ⇄ Inputs.checkbox</h1>
+    <p class="hint">
+      Two views over one value, wired with
+      <code>Inputs.bind(target, source)</code>. Toggle either side — the other
+      follows. This is the notebook's “Binding to another input” section, and it
+      is the strictest test of the widget's event contract:
+      <code>bind</code> writes <code>source.value</code> and then dispatches
+      <code>input</code> on the source itself, so a widget whose setter
+      <em>also</em> dispatches would double-fire and echo.
+    </p>
+
+    <section>
+      <h2>Bound pair</h2>
+      <div class="pair">
+        <div>
+          <div id="source"></div>
+        </div>
+        <div>
+          <div id="target"></div>
+        </div>
+      </div>
+      <div class="readout">source value: <span id="source-value"></span></div>
+      <div class="readout">target value: <span id="target-value"></span></div>
+      <div class="readout">in sync: <span id="in-sync"></span></div>
+      <div class="readout">
+        source input events: <span id="source-events">0</span>
+      </div>
+    </section>
+
+    <!--
+      Deliberately the ESM build, resolved through an import map, rather than
+      the UMD bundle used by index.html. That gives the ESM output real browser
+      coverage — a broken `exports` map or external would otherwise ship
+      unnoticed, since every other test exercises only the UMD bundle.
+    -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@observablehq/inputs": "../node_modules/@observablehq/inputs/dist/index.js",
+          "htl": "../node_modules/htl/src/index.js",
+          "isoformat": "../node_modules/isoformat/src/index.js"
+        }
+      }
+    </script>
+    <script type="module">
+      import * as Inputs from "@observablehq/inputs";
+      import searchCheckbox from "../dist/SearchCheckbox.esm.js";
+
+      const DATA = [
+        "Crossing",
+        "Finishing",
+        "HeadingAccuracy",
+        "ShortPassing",
+        "Volleys",
+        "Dribbling",
+        "Curve",
+        "FKAccuracy",
+        "LongPassing",
+        "BallControl",
+      ];
+
+      // The searchCheckbox is the source of truth; a plain Inputs.checkbox is
+      // bound to it as a second view.
+      const source = searchCheckbox(DATA, {
+        label: "Skills (searchable)",
+        value: ["Curve", "Dribbling"],
+        height: 160,
+      });
+
+      const target = Inputs.checkbox(DATA, { label: "Skills (plain)" });
+
+      document.getElementById("source").append(source);
+      document.getElementById("target").append(target);
+
+      // The third argument matters outside Observable. Inputs.bind defaults it
+      // to `disposal(target)`, which resolves immediately when the element is
+      // not inside an `.observablehq` cell — and on resolution bind removes its
+      // source listener. Without this, source→target silently stops working one
+      // animation frame after binding, while target→source keeps going.
+      const never = new Promise(() => {});
+      Inputs.bind(target, source, never);
+
+      let sourceEvents = 0;
+      const sourceValue = document.getElementById("source-value");
+      const targetValue = document.getElementById("target-value");
+      const inSync = document.getElementById("in-sync");
+      const sourceEventsEl = document.getElementById("source-events");
+
+      function render() {
+        const a = [...source.value].sort();
+        const b = [...target.value].sort();
+        sourceValue.textContent = a.join(", ") || "(none)";
+        targetValue.textContent = b.join(", ") || "(none)";
+        inSync.textContent =
+          JSON.stringify(a) === JSON.stringify(b) ? "yes" : "NO";
+      }
+
+      source.addEventListener("input", () => {
+        sourceEvents += 1;
+        sourceEventsEl.textContent = String(sourceEvents);
+        render();
+      });
+      target.addEventListener("input", render);
+
+      render();
+    </script>
+  </body>
+</html>

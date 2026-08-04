@@ -136,19 +136,30 @@ export default function searchCheckbox(data, options) {
       return selectedToArray();
     },
     set(v) {
+      // Deviation #8: refresh the UI, but do NOT dispatch. @509 did neither,
+      // leaving the checkboxes stale after a programmatic set. Dispatching here
+      // instead would break Inputs.bind, which writes `source.value` and then
+      // dispatches on the source itself — every bound change would fire twice.
+      // e2e/bind.spec.js guards this.
       selectedFromArray(v);
-      updateValueFromSelected();
+      render();
     },
   });
 
-  function updateValueFromSelected() {
+  /** Sync the DOM to `selected`. Never dispatches. */
+  function render() {
     checkboxes.value = selectedToArray();
-    if (debug) console.log("searchCheckbox", checkboxes.value);
     output.textContent = counterText();
-    component.dispatchEvent(new Event("input", { bubbles: true }));
     // Deviation #2: force a reflow. Needed when a `format` function sets
     // max-height. In @509 this was `style.zIndex = 1`, a no-op on a fragment.
     void component.offsetHeight;
+  }
+
+  /** Sync the DOM and notify listeners. Use for user-driven changes only. */
+  function updateValueFromSelected() {
+    render();
+    if (debug) console.log("searchCheckbox", checkboxes.value);
+    component.dispatchEvent(new Event("input", { bubbles: true }));
   }
 
   btnAll.addEventListener("click", () => {
