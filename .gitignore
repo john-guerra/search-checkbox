@@ -1,0 +1,15 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+.observablehq/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+.playwright-mcp/
+
+# Personal, machine-specific notes (checklist: keep private notes private)
+*.local.md
