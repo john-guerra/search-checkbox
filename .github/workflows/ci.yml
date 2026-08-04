@@ -27,7 +27,7 @@ jobs:
       # Build runs even when the tests pass: it catches import and integration
       # breakage that a unit suite cannot see.
       - run: npm run build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-report
