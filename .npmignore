@@ -7,5 +7,6 @@ test/
 .mcp.json
 playwright.config.js
 eslint.config.js
+tsconfig.json
 CLAUDE.md
 AGENTS.md
