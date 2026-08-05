@@ -7,7 +7,7 @@ Its reason to exist: **All / None act on the options currently matching the
 search**, not on the whole list. That turns "select the twelve goalkeeping
 attributes out of these eighty-eight" into two actions instead of twelve.
 
-- [Try the demo](./example/index.html) — run `npx http-server .` and open it
+- [Try the demo](https://github.com/john-guerra/search-checkbox/blob/main/example/index.html) — run `npx http-server .` and open it
 - [The original Observable notebook](https://observablehq.com/@john-guerra/search-checkbox)
 - [CodePen example](https://codepen.io/duto_guerra/pen/gOWMxmM)
 
@@ -100,7 +100,7 @@ const target = Inputs.checkbox(data);
 Inputs.bind(target, source, new Promise(() => {}));
 ```
 
-See [`example/bind.html`](./example/bind.html) for a working page.
+See [`example/bind.html`](https://github.com/john-guerra/search-checkbox/blob/main/example/bind.html) for a working page.
 
 ## API
 
@@ -169,7 +169,7 @@ Ten intentional differences, none of which change how the widget looks:
     `(3 of 2 selected)`.
 
 Full rationale in
-[`docs/superpowers/specs/`](./docs/superpowers/specs/2026-08-04-search-checkbox-port-design.md).
+[`docs/superpowers/specs/`](https://github.com/john-guerra/search-checkbox/blob/main/docs/superpowers/specs/2026-08-04-search-checkbox-port-design.md).
 
 ## Development
 
@@ -182,7 +182,7 @@ npm run test:e2e      # Playwright, Chromium — builds dist/ first
 npm run build         # rollup → dist/
 ```
 
-Contributors and agents: read [`CLAUDE.md`](./CLAUDE.md) first. It documents the
+Contributors and agents: read [`CLAUDE.md`](https://github.com/john-guerra/search-checkbox/blob/main/CLAUDE.md) first. It documents the
 ten traps in this codebase — several lines look like bugs and are not — and the
 mandatory red→green test discipline.
 
