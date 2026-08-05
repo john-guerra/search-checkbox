@@ -1,20 +1,22 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run:*)",
-      "Bash(npm test:*)",
-      "Bash(npm ci:*)",
-      "Bash(npm install:*)",
-      "Bash(npm pack:*)",
-      "Bash(npx playwright:*)",
-      "Bash(npx http-server:*)",
-      "Bash(npx tsc:*)",
-      "Bash(npx prettier:*)",
-      "Bash(npx eslint:*)",
-      "Bash(git status:*)",
+      "Bash(npm ci)",
+      "Bash(npm run build)",
+      "Bash(npm run dev)",
+      "Bash(npm run format)",
+      "Bash(npm run lint)",
+      "Bash(npm run test:e2e)",
+      "Bash(npm run typecheck)",
+      "Bash(npm test)",
+      "Bash(npm pack --dry-run)",
+      "Bash(npx playwright install:*)",
+      "Bash(npx playwright test:*)",
+      "Bash(npx tsc --noEmit)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
-      "Bash(git show:*)"
+      "Bash(git show:*)",
+      "Bash(git status:*)"
     ]
   }
 }
