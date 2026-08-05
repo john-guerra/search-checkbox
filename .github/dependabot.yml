@@ -5,6 +5,15 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      # htl must track whatever @observablehq/inputs depends on. Inputs 0.12
+      # still requires htl@^0.3.1, so bumping ours to 1.0.0 does not replace
+      # theirs — npm nests a second copy and the UMD build inlines both,
+      # taking dist/SearchCheckbox.js from 45KB to 79KB. See trap 9 in
+      # CLAUDE.md. Only the major is ignored, so 0.3.x patches (including
+      # security fixes) still open PRs. Remove this once Inputs upgrades.
+      - dependency-name: htl
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
