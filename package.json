@@ -56,7 +56,7 @@
     "format": "prettier --write .",
     "test": "node --test test/*.test.js",
     "test:e2e": "playwright test",
-    "build": "rollup -c",
+    "build": "node scripts/importmap.mjs && rollup -c",
     "dev": "rollup -c -w",
     "prepublishOnly": "npm run build",
     "typecheck": "tsc --noEmit"
