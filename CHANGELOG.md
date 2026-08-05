@@ -41,6 +41,13 @@ like; all are covered by tests.
 
 ### Changed
 
+- Dev toolchain moved to current majors: ESLint 10, TypeScript 7, Rollup
+  plugin-commonjs 29, plugin-node-resolve 16, globals 17. CI runs on Node 20.19
+  and 24 (LTS).
+- `htl` is deliberately held at `^0.3.1`, not upgraded to 1.0.0. The latest
+  `@observablehq/inputs` still depends on `htl@^0.3.1`, so upgrading installs a
+  second copy and grows the UMD bundle from 45KB to 79KB. It can move once
+  Inputs does.
 - The widget returns a single `<div class="search-checkbox">` element. The
   notebook returned a `DocumentFragment`, which is emptied when you append it —
   so it could not be re-appended, styled, or measured.

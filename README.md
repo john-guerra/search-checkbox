@@ -183,7 +183,7 @@ npm run build         # rollup → dist/
 ```
 
 Contributors and agents: read [`CLAUDE.md`](./CLAUDE.md) first. It documents the
-nine traps in this codebase — several lines look like bugs and are not — and the
+ten traps in this codebase — several lines look like bugs and are not — and the
 mandatory red→green test discipline.
 
 ## License

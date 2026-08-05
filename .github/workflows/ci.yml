@@ -12,6 +12,14 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 20.19 is the floor declared in package.json engines (ESLint 10 needs
+        # it); 24 is the current LTS. Testing both keeps the engines claim
+        # honest rather than aspirational.
+        node-version: [20.19, 24]
+    name: test (node ${{ matrix.node-version }})
     steps:
       # Actions are pinned to commit SHAs, not tags: a tag can be moved to
       # point at different code, a SHA cannot. Dependabot keeps them current.
@@ -20,7 +28,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 22
+          node-version: ${{ matrix.node-version }}
           cache: npm
       - run: npm ci
       - run: npm run lint
@@ -34,7 +42,7 @@ jobs:
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: failure()
         with:
-          name: playwright-report
+          name: playwright-report-node${{ matrix.node-version }}
           path: playwright-report/
           retention-days: 7
           if-no-files-found: ignore

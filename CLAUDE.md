@@ -88,7 +88,15 @@ So the CDN `<script>` tag works standalone while bundlers still dedupe. Also:
 statics. Adding named exports makes Rollup emit a UMD namespace object, and the
 CDN global stops being callable.
 
-**9. `Inputs.bind` is one-way outside Observable.**
+**9. Do not upgrade `htl` to 1.0.0 — Dependabot will keep asking.**
+`@observablehq/inputs@0.12` (the latest) depends on `htl@^0.3.1`. Upgrading our
+direct dependency does not replace theirs, it adds a second copy nested under
+`node_modules/@observablehq/inputs/`, and Rollup then inlines **both** — the UMD
+bundle goes 45KB → 79KB. It also moved `src/index.js` to `dist/index.js`, which
+is why `example/importmap.js` is generated rather than hardcoded. Revisit when
+Inputs itself upgrades.
+
+**10. `Inputs.bind` is one-way outside Observable.**
 Its default invalidation is `disposal(target)`, which resolves immediately when
 the element is not inside an `.observablehq` cell; `bind` then removes its source
 listener. Pass a never-resolving promise as the third argument. See
