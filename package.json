@@ -1,6 +1,6 @@
 {
   "name": "@john-guerra/search-checkbox",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A reactive widget combining a search box with checkboxes, for selecting from long lists. Select all/none respects the active filter.",
   "keywords": [
     "observable",

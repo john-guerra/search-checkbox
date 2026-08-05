@@ -22,7 +22,7 @@ you need:
 
 ```html
 <!-- integrity hash added at first npm publish -->
-<script src="https://cdn.jsdelivr.net/npm/@john-guerra/search-checkbox@0.1.0/dist/SearchCheckbox.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@john-guerra/search-checkbox@1.0.0/dist/SearchCheckbox.min.js"></script>
 ```
 
 Pin the version and add `integrity`/`crossorigin` once published — an unpinned,
@@ -64,7 +64,7 @@ document.body.append(widget);
 <label>You selected: <output id="output"></output></label>
 
 <!-- integrity hash added at first npm publish -->
-<script src="https://cdn.jsdelivr.net/npm/@john-guerra/search-checkbox@0.1.0/dist/SearchCheckbox.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@john-guerra/search-checkbox@1.0.0/dist/SearchCheckbox.min.js"></script>
 <script>
   const widget = SearchCheckbox([1, 2, 3, 4]);
   document.querySelector("#target").append(widget);

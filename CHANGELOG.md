@@ -5,7 +5,12 @@ All notable changes to this project are documented here. The format follows
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html): patch for
 a bugfix, minor for a new option, major for a breaking API change.
 
-## [Unreleased]
+## [1.0.0] — 2026-08-05
+
+First standalone release. The API matches the Observable notebook, so
+`searchCheckbox(data, options)` behaves as it always has; 1.0.0 reflects that
+the widget has been stable in the notebook since 2024, not that anything
+changed at this version.
 
 ### Added
 
@@ -63,3 +68,5 @@ Versions before this package existed.
 - **@433** — Jan 30, 2023 — Reorganizing all/none buttons and add count of
   selected elements
 - **@357** — Oct 12, 2022 — Bugfix multiple input events were triggered
+
+[1.0.0]: https://github.com/john-guerra/search-checkbox/releases/tag/v1.0.0
