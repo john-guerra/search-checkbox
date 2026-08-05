@@ -21,12 +21,15 @@ Or from a CDN. The UMD bundle inlines its dependencies, so this one tag is all
 you need:
 
 ```html
-<!-- integrity hash added at first npm publish -->
-<script src="https://cdn.jsdelivr.net/npm/@john-guerra/search-checkbox@1.0.0/dist/SearchCheckbox.min.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/@john-guerra/search-checkbox@1.0.0/dist/SearchCheckbox.min.js"
+  integrity="sha384-QWwSwpLh15eFlXqkQ3UBAKTvBvdBhaIiiG1y0+q3DmIDXM7zDG2Q+ZVT5gL08RnA"
+  crossorigin="anonymous"
+></script>
 ```
 
-Pin the version and add `integrity`/`crossorigin` once published — an unpinned,
-unverified CDN tag is a supply-chain hole.
+The tag is version-pinned and carries a Subresource Integrity hash, so the
+browser refuses the file if the CDN ever serves different bytes.
 
 Observable Inputs ships its own stylesheet. Without it the widget works but
 looks unstyled:
@@ -63,8 +66,11 @@ document.body.append(widget);
 <div id="target"></div>
 <label>You selected: <output id="output"></output></label>
 
-<!-- integrity hash added at first npm publish -->
-<script src="https://cdn.jsdelivr.net/npm/@john-guerra/search-checkbox@1.0.0/dist/SearchCheckbox.min.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/@john-guerra/search-checkbox@1.0.0/dist/SearchCheckbox.min.js"
+  integrity="sha384-QWwSwpLh15eFlXqkQ3UBAKTvBvdBhaIiiG1y0+q3DmIDXM7zDG2Q+ZVT5gL08RnA"
+  crossorigin="anonymous"
+></script>
 <script>
   const widget = SearchCheckbox([1, 2, 3, 4]);
   document.querySelector("#target").append(widget);

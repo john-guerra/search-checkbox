@@ -131,7 +131,10 @@ briefly disguised a missing module as a passing red step.
 **Guardrails.**
 
 - Never hand-edit `dist/` — generated and gitignored.
-- Do not publish to npm. The repo is left ready to publish, not published.
+- **Publishing is a human decision.** `@john-guerra/search-checkbox` is live on
+  npm as of 1.0.0, and a published version can never be replaced — only
+  superseded. Don't run `npm publish` on someone's behalf; follow
+  [Releasing](#releasing) and hand them the command.
 - No secrets in this repo; it needs none.
 - Don't add a CDN `<script>`/`<link>` without Subresource Integrity. The demo
   pages load `@observablehq/inputs` from `node_modules` on purpose — a network
@@ -144,6 +147,32 @@ briefly disguised a missing module as a passing red step.
 - Update `CHANGELOG.md` in the _same commit_ as the change.
 - When a bug is fixed, add a test at the tier that would have caught it —
   pure-logic bug → `test/`, DOM or load-order bug → `e2e/`.
+
+## Releasing
+
+`publishConfig.access` is `public`, so a bare `npm publish` works. Without it,
+npm defaults **scoped** packages to restricted and a free account gets a
+confusing `402 Payment Required` — nothing in the manifest says "private", the
+scope alone is enough.
+
+Bumping the version means refreshing the README's CDN snippets too. They pin a
+version _and_ an SRI hash of the published bundle, so a bump leaves both stale.
+`test/readme.test.js` fails loudly if the pinned version drifts from
+`package.json`, but it cannot know the hash is wrong — recompute it by hand:
+
+```bash
+npm version <patch|minor|major>          # bump
+# update the two CDN URLs in README.md to the new version
+npm publish                              # access:public comes from publishConfig
+# wait for jsdelivr, then recompute the hash from what the CDN actually serves:
+curl -s https://cdn.jsdelivr.net/npm/@john-guerra/search-checkbox@<v>/dist/SearchCheckbox.min.js \
+  | openssl dgst -sha384 -binary | openssl base64 -A
+# paste into the two integrity="sha384-…" attributes
+git tag v<v> && git push --tags
+```
+
+Compute the hash from the **CDN response**, not the local `dist/` — that is what
+browsers will actually fetch, and comparing the two also catches a bad upload.
 
 ## Still open
 
